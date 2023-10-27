@@ -19,8 +19,6 @@
 extern "C" {
 #endif
 
-SOCKET socketServer;
-
 void sig_handler(int sig);
 int tcp();
 

@@ -2,6 +2,8 @@
 
 #include "tcp.h"
 
+SOCKET socketServer;
+
 void sig_handler(int sig) {
   if(sig == SIGINT) {
     closesocket(socketServer);
