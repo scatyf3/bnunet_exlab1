@@ -4,8 +4,10 @@
 
 SOCKET socketServer;
 
+//处理关闭连接
 void sig_handler(int sig) {
   if(sig == SIGINT) {
+    printf("connection close");
     closesocket(socketServer);
     WSACleanup();
     printf("[Info] Close socket listening.\r\n");
@@ -34,9 +36,11 @@ int tcp() {
     printf("[Info] Start to listen 0.0.0.0:80\r\n");
     signal(SIGINT, sig_handler);
     while(1) {
+      printf("this is a debug msg");
       socketClient = accept(socketServer, (SOCKADDR*)&addrClient, &addrlen);
       if(socketClient != -1) {
         recv(socketClient, recvBuf, RECV_BUFFER_LENGTH, 0);
+        
         sendBuf = http_process(recvBuf);
         if(sendBuf) {
           send(socketClient, sendBuf, strlen(sendBuf), 0);
