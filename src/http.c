@@ -36,12 +36,19 @@ char *http_process(char *request) {
     free(file_content);
     fclose(file);
   } else {
-    // 404 response todo
+    //header
     sprintf(response, "HTTP/1.1 404 Not Found\r\n");
     strcat(response, "Content-Type: text/html\r\n");
     strcat(response, "\r\n");
-    strcat(response, "<html><body><h1>404 Not Found</h1></body></html>");
+    //content 
+    FILE *file = fopen("/htdocs/404.html", "r");
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    char *file_content = malloc(file_size + 1);
+    fread(file_content, file_size, 1, file);
+    file_content[file_size] = '\0';
+    strcat(response, file_content);
   }
-
   return response;
 }
